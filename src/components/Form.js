@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { withFormik, Form, Field } from 'formik';
 import axios from 'axios';
 import * as Yup from 'yup';
+import styled from 'styled-components';
 
 const UserForm = ({values, errors, touched, status}) => {
     const [users, setUser] = useState([])
@@ -16,51 +17,48 @@ const UserForm = ({values, errors, touched, status}) => {
         <div className='form'>
             <Form>
                 {/* username: */}
-                <label>
-                Username: 
-                    <Field
+                    <Field className='field'
                     type='text'
                     name='username'
+                    placeholder='Username'
                     />
                     {touched.username && errors.username && (<p>{errors.username}</p>)}
-                </label>
+
             
                 {/* email: */}
-                <label>
-                    Email:
-                    <Field 
+                    <Field className='field'
                     type='text'
                     name='email'
+                    placeholder='Email'
                     />
                     {touched.email && errors.email && (<p>{errors.email}</p>)}
-                </label>
 
                 {/* password: */}
-                <label>
-                    Password:
-                    <Field
+                    <Field className='field'
                     type='password'
                     name='password'
+                    placeholder='Password'
                     />
                     {touched.password && errors.password && (<p>{errors.password}</p>)}
-                </label>
                 
                 {/* terms of service checkbox: */}
-                <label>
+               
                 {touched.tos && errors.tos && (<p>{errors.tos}</p>)}
                     I have read the Terms of Service: 
                     <Field
                     type='checkbox'
                     name='tos'
                     />
-                </label>
+               
 
-                <button>Submit</button>
+                <button className='button'>Log in</button>
 
             </Form>
+            <div className='welcome-container'>
             {users.map(user => (
                     <p>Thanks for signing in, {user.username}</p>
             ))}
+            </div>
         </div>
         
     )
