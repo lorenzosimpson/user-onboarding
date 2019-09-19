@@ -1,46 +1,76 @@
 import React from 'react';
 import { withFormik, Form, Field } from 'formik';
+import axios from 'axios';
+import * as Yup from 'yup';
 
-const UserForm = () => {
+const UserForm = ({values, errors}) => {
     return (
-        <Form>
-            {/* username: */}
-            <label>
+        <div className='form'>
+            <Form>
+                {/* username: */}
+                <label>
                 Username: 
-                <input 
-                type='text'
-                name='username'
-                />
-            </label>
+                    <Field
+                    type='text'
+                    name='username'
+                    />
+                </label>
 
-            {/* email: */}
-            <label>
-                Email:
-                <input 
-                type='text'
-                name='email'
-                />
-            </label>
-            
-            {/* password: */}
-            <label>
-                Password:
-                <input
-                type='password'
-                name='password'
-                />
-            </label>
+                {/* email: */}
+                <label>
+                    Email:
+                    <Field 
+                    type='text'
+                    name='email'
+                    />
+                </label>
 
+                {/* password: */}
+                <label>
+                    Password:
+                    <Field
+                    type='password'
+                    name='password'
+                    />
+                </label>
+                
+                {/* terms of service checkbox: */}
+                <label>
+                    I have read the Terms of Service: 
+                    <Field
+                    type='checkbox'
+                    name='tos'
+                    />
+                </label>
 
-
-
-
-
-
-
-        </Form>
+                <button>Submit</button>
+            </Form>
+    </div>
         
     )
 }
 
-export default UserForm;
+const FormikUserForm = withFormik({
+    mapPropsToValues({username, email, password, tos}) {
+        return {
+            username: username || '',
+            email: email || '',
+            password: password || '',
+            tos: tos || false
+        }
+    },
+
+
+    // validation schema
+    validationSchema: Yup.object().shape({
+        name: Yup.string().required(),
+        email: Yup.string().email().required(),
+    }),
+
+    handleSubmit(values) {
+        console.log(values);
+        //THIS IS WHERE YOU DO YOUR FORM SUBMISSION CODE... HTTP REQUESTS, ETC.
+      }
+})(UserForm);
+
+export default FormikUserForm;
