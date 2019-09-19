@@ -56,7 +56,7 @@ const UserForm = ({values, errors, touched, status}) => {
             </Form>
             <div className='welcome-container'>
             {users.map(user => (
-                    <p>Thanks for signing in, {user.username}</p>
+                    <h3>Welcome, {user.username}!</h3>
             ))}
             </div>
         </div>

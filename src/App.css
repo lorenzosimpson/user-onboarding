@@ -50,3 +50,13 @@ form {
   font-weight: bold;
 }
 
+.welcome-container {
+  margin: 200px;
+  width: 600px;
+  background: white;
+}
+
+.welcome-container h3 {
+  padding: 50px;
+  font-size: 1.5rem;
+}
