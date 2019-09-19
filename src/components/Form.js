@@ -3,7 +3,7 @@ import { withFormik, Form, Field } from 'formik';
 import axios from 'axios';
 import * as Yup from 'yup';
 
-const UserForm = ({values, errors}) => {
+const UserForm = ({values, errors, touched}) => {
     return (
         <div className='form'>
             <Form>
@@ -14,8 +14,9 @@ const UserForm = ({values, errors}) => {
                     type='text'
                     name='username'
                     />
+                    {touched.username && errors.username && (<p>{errors.username}</p>)}
                 </label>
-
+            
                 {/* email: */}
                 <label>
                     Email:
@@ -23,6 +24,7 @@ const UserForm = ({values, errors}) => {
                     type='text'
                     name='email'
                     />
+                    {touched.email && errors.email && (<p>{errors.email}</p>)}
                 </label>
 
                 {/* password: */}
@@ -32,6 +34,7 @@ const UserForm = ({values, errors}) => {
                     type='password'
                     name='password'
                     />
+                    {touched.password && errors.password && (<p>{errors.password}</p>)}
                 </label>
                 
                 {/* terms of service checkbox: */}
@@ -63,8 +66,12 @@ const FormikUserForm = withFormik({
 
     // validation schema
     validationSchema: Yup.object().shape({
-        name: Yup.string().required(),
-        email: Yup.string().email().required(),
+        username: Yup.string().required('You must tell us your name'),
+        email: Yup.string().email().required('You must tell us your email'),
+        password: Yup.string().min(6, 'Password must be at least 6 characters').required('You must have a password'),
+        tos: Yup
+              .boolean()
+              .oneOf([true], 'Must Accept Terms and Conditions'),
     }),
 
     handleSubmit(values) {
