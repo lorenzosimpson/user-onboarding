@@ -39,6 +39,7 @@ const UserForm = ({values, errors, touched}) => {
                 
                 {/* terms of service checkbox: */}
                 <label>
+                {errors.tos && (<p>{errors.tos}</p>)}
                     I have read the Terms of Service: 
                     <Field
                     type='checkbox'
@@ -71,7 +72,7 @@ const FormikUserForm = withFormik({
         password: Yup.string().min(6, 'Password must be at least 6 characters').required('You must have a password'),
         tos: Yup
               .boolean()
-              .oneOf([true], 'Must Accept Terms and Conditions'),
+              .oneOf([true], 'You must Accept the Terms and Conditions'),
     }),
 
     handleSubmit(values) {
