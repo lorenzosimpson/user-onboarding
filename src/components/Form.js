@@ -1,9 +1,17 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { withFormik, Form, Field } from 'formik';
 import axios from 'axios';
 import * as Yup from 'yup';
 
-const UserForm = ({values, errors, touched}) => {
+const UserForm = ({values, errors, touched, status}) => {
+    const [users, setUser] = useState([])
+
+
+    useEffect(() => {
+        if (status) {
+            setUser([...users, status])
+        }
+    }, [status])
     return (
         <div className='form'>
             <Form>
@@ -39,7 +47,7 @@ const UserForm = ({values, errors, touched}) => {
                 
                 {/* terms of service checkbox: */}
                 <label>
-                {errors.tos && (<p>{errors.tos}</p>)}
+                {touched.tos && errors.tos && (<p>{errors.tos}</p>)}
                     I have read the Terms of Service: 
                     <Field
                     type='checkbox'
@@ -48,12 +56,16 @@ const UserForm = ({values, errors, touched}) => {
                 </label>
 
                 <button>Submit</button>
+
             </Form>
-    </div>
+            {users.map(user => (
+                    <p>Thanks for signing in, {user.username}</p>
+            ))}
+        </div>
         
     )
 }
-
+//make the above component into a Formik form
 const FormikUserForm = withFormik({
     mapPropsToValues({username, email, password, tos}) {
         return {
@@ -75,9 +87,18 @@ const FormikUserForm = withFormik({
               .oneOf([true], 'You must Accept the Terms and Conditions'),
     }),
 
-    handleSubmit(values) {
-        console.log(values);
-        //THIS IS WHERE YOU DO YOUR FORM SUBMISSION CODE... HTTP REQUESTS, ETC.
+    //what to do with the data: POST
+    handleSubmit(values, { setStatus }) {
+        axios
+        .post('https://reqres.in/api/users/', values)
+        .then(response => {
+            setStatus(response.data)
+            console.log(response)
+        })
+        .catch(error => {
+            console.log(error.response)
+        })
+        
       }
 })(UserForm);
 
